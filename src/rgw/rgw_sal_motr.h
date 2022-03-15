@@ -22,6 +22,8 @@ extern "C" {
 #pragma clang diagnostic ignored "-Wextern-c-compat"
 #include "motr/config.h"
 #include "motr/client.h"
+#include "lib/thread.h"
+
 #pragma clang diagnostic pop
 }
 
@@ -728,6 +730,8 @@ class MotrAtomicWriter : public Writer {
   struct m0_bufvec attr;
   struct m0_indexvec ext;
 
+  uint64_t req_id;
+
   public:
   MotrAtomicWriter(const DoutPrefixProvider *dpp,
           optional_yield y,
@@ -918,7 +922,6 @@ class MotrStore : public Store {
     MotrMetaCache* obj_meta_cache;
     MotrMetaCache* user_cache;
     MotrMetaCache* bucket_inst_cache;
-
   public:
     CephContext *cctx;
     struct m0_client   *instance;
